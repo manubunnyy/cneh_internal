@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX_NODES 10
+#define INF INT_MAX
+
+// Function to perform distance vector routing
+void distanceVector(int costMatrix[MAX_NODES][MAX_NODES], int distance[MAX_NODES], int via[MAX_NODES], int n) {
+    // Initialize distance and via arrays
+    for (int i = 0; i < n; i++) {
+        distance[i] = INF;
+        via[i] = -1;
+    }
+
+    // Initialize distance to self as 0
+    for (int i = 0; i < n; i++) {
+        distance[i] = costMatrix[i][i];
+    }
+
+    // Update distances via intermediate nodes
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (distance[i] > costMatrix[i][k] + distance[k] && costMatrix[i][k] != INF && distance[k] != INF) {
+                    distance[i] = costMatrix[i][k] + distance[k];
+                    via[i] = k;
+                }
+            }
+        }
+    }
+
+    // Print the routing table
+    printf("Node\tDistance\tVia\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%d\t\t%d\n", i, distance[i], via[i]);
+    }
+}
+
+int main() {
+    int n; // Number of nodes
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+
+    int costMatrix[MAX_NODES][MAX_NODES]; // Cost matrix for edges between nodes
+
+    // Input the cost matrix
+    printf("Enter the cost matrix (-1 for infinity):\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &costMatrix[i][j]);
+            if (costMatrix[i][j] == -1) {
+                costMatrix[i][j] = INF;
+            }
+        }
+    }
+
+    int distance[MAX_NODES], via[MAX_NODES];
+
+    // Perform distance vector routing
+    distanceVector(costMatrix, distance, via, n);
+
+    return 0;
+}
