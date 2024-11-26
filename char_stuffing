@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int n, j = 0;
+    char start_delim, end_delim;
+    
+    // Input the size of the string
+    printf("Enter the Size of the String: ");
+    scanf("%d", &n);
+
+    // Declare the arrays for the original and stuffed strings
+    char b[n + 1], stuffed_str[2 * n + 1]; // Create an extra space for stuffing
+
+    // Input the original string
+    printf("Enter the String: ");
+    scanf("%s", b);
+
+    // Input the start and end delimiters
+    printf("Enter the Start Delimiter: ");
+    scanf(" %c", &start_delim);  // Notice the space before %c to skip any leading whitespace
+    printf("Enter the End Delimiter: ");
+    scanf(" %c", &end_delim);
+
+    // Add the start and end delimiters at the beginning of the stuffed string
+    stuffed_str[j++] = start_delim;
+    stuffed_str[j++] = end_delim;
+
+    // Process each character of the original string
+    for (int i = 0; i < n; i++) {
+        if (b[i] == start_delim || b[i] == end_delim) {
+            // If we encounter a delimiter, we stuff an extra delimiter
+            stuffed_str[j++] = start_delim;
+            stuffed_str[j++] = b[i]; // Stuff the current delimiter
+            stuffed_str[j++] = end_delim;
+        } else {
+            // Otherwise, just copy the character as it is
+            stuffed_str[j++] = b[i];
+        }
+    }
+
+    // Add the end delimiters at the end of the stuffed string
+    stuffed_str[j++] = start_delim;
+    stuffed_str[j++] = end_delim;
+
+    // Null-terminate the stuffed string
+    stuffed_str[j] = '\0';
+
+    // Output the final string after character stuffing
+    printf("The Final String After Character Stuffing: %s\n", stuffed_str);
+
+    return 0;
+}
